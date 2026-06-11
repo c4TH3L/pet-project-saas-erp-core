@@ -1,0 +1,305 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1-create-permissions
+      author: developer
+      changes:
+        - createTable:
+            tableName: permissions
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(60)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  - changeSet:
+      id: 2-create-modules
+      author: developer
+      changes:
+        - createTable:
+            tableName: modules
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  - changeSet:
+      id: 3-create-founders
+      author: developer
+      changes:
+        - createTable:
+            tableName: founders
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password_hash
+                  type: varchar(60)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 4-create-companies
+      author: developer
+      changes:
+        - createTable:
+            tableName: companies
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: founder_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_companies_founder
+                    referencedTableName: founders
+                    referencedColumnNames: id
+                    deleteCascade: false
+              - column:
+                  name: name
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: company_code
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: is_active
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 5-create-feature-flags
+      author: developer
+      changes:
+        - createTable:
+            tableName: feature_flags
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: company_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_feature_flags_company
+                    referencedTableName: companies
+                    referencedColumnNames: id
+                    deleteCascade: true
+              - column:
+                  name: module_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_feature_flags_module
+                    referencedTableName: modules
+                    referencedColumnNames: id
+                    deleteCascade: true
+              - column:
+                  name: is_enabled
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: feature_flags
+            columnNames: company_id, module_id
+            constraintName: uk_company_module
+
+  - changeSet:
+      id: 6-create-roles
+      author: developer
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: company_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_roles_company
+                    referencedTableName: companies
+                    referencedColumnNames: id
+                    deleteCascade: true
+              - column:
+                  name: name
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 7-create-role-permissions
+      author: developer
+      changes:
+        - createTable:
+            tableName: role_permissions
+            columns:
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_role_permissions_role
+                    referencedTableName: roles
+                    referencedColumnNames: id
+                    deleteCascade: true
+              - column:
+                  name: permission_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_role_permissions_permission
+                    referencedTableName: permissions
+                    referencedColumnNames: id
+                    deleteCascade: true
+        - addPrimaryKey:
+            tableName: role_permissions
+            columnNames: role_id, permission_id
+            constraintName: pk_role_permissions
+
+  - changeSet:
+      id: 8-create-sub-companies
+      author: developer
+      changes:
+        - createTable:
+            tableName: sub_companies
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: company_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_sub_companies_company
+                    referencedTableName: companies
+                    referencedColumnNames: id
+                    deleteCascade: true
+              - column:
+                  name: name
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(500)
+              - column:
+                  name: description
+                  type: text
+
+  - changeSet:
+      id: 9-create-employees
+      author: developer
+      changes:
+        - createTable:
+            tableName: employees
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: company_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_employees_company
+                    referencedTableName: companies
+                    referencedColumnNames: id
+                    deleteCascade: true
+              - column:
+                  name: sub_company_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_employees_sub_company
+                    referencedTableName: sub_companies
+                    referencedColumnNames: id
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password_hash
+                  type: varchar(60)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_employees_role
+                    referencedTableName: roles
+                    referencedColumnNames: id
+                    deleteCascade: false
+        - addUniqueConstraint:
+            tableName: employees
+            columnNames: company_id, email
+            constraintName: uk_company_employee_email
