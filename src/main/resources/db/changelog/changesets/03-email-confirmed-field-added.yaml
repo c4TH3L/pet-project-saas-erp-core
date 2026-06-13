@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_email_confirmed_to_founders
+      author: developer
+      changes:
+        - addColumn:
+            tableName: founders
+            columns:
+              - column:
+                  name: email_confirmed
+                  type: boolean
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false

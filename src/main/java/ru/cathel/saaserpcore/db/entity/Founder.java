@@ -29,4 +29,7 @@ public class Founder {
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
+
+    @Column(name = "email_confirmed", nullable = false)
+    private boolean emailConfirmed;
 }

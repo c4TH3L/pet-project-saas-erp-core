@@ -1,0 +1,38 @@
+databaseChangeLog:
+  - changeSet:
+      id: 3-refactor-ff
+      author: developer
+      changes:
+        - dropUniqueConstraint:
+            constraintName: uk_company_module
+            tableName: feature_flags
+
+        - dropForeignKeyConstraint:
+            baseTableName: feature_flags
+            constraintName: fk_feature_flags_company
+
+        - dropColumn:
+            columnName: company_id
+            tableName: feature_flags
+
+        - addColumn:
+            tableName: feature_flags
+            columns:
+              - column:
+                  name: sub_company_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: feature_flags
+            baseColumnNames: sub_company_id
+            referencedTableName: sub_companies
+            referencedColumnNames: id
+            constraintName: fk_feature_flags_sub_company
+            onDelete: CASCADE
+
+        - addUniqueConstraint:
+            tableName: feature_flags
+            columnNames: sub_company_id, module_id
+            constraintName: uk_sub_company_module

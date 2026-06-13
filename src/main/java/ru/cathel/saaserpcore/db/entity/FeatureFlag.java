@@ -11,9 +11,9 @@ import org.springframework.security.core.userdetails.User;
 @Builder
 @Entity
 @Table(name = "feature_flags", uniqueConstraints = {
-        @UniqueConstraint(name = "uk_company_module",
+        @UniqueConstraint(name = "uk_sub_company_module",
                 columnNames = {
-                        "company_id", "module_id"
+                        "sub_company_id", "module_id"
                 })
 })
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -24,8 +24,8 @@ public class FeatureFlag {
     private long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private Company company;
+    @JoinColumn(name = "sub_company_id")
+    private SubCompany subCompany;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "module_id")
