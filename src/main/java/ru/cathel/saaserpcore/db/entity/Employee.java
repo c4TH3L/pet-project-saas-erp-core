@@ -30,7 +30,7 @@ public class Employee {
     @JoinColumn(name = "subcompany_id")
     private SubCompany subCompany;
 
-    @Column(name = "email", nullable = false, length = 255)
+    @Column(name = "email", nullable = false)
     private String email;
 
     @Column(name = "password_hash", nullable = false, length = 60)

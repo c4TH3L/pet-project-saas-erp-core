@@ -1,3 +1,4 @@
-@NonNullApi package ru.cathel.saaserpcore;
+@NullMarked
+package ru.cathel.saaserpcore;
 
-import org.springframework.lang.NonNullApi;
+import org.jspecify.annotations.NullMarked;

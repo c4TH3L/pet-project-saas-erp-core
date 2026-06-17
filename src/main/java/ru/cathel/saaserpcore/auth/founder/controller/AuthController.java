@@ -1,4 +1,4 @@
-package ru.cathel.saaserpcore.auth.api.controller;
+package ru.cathel.saaserpcore.auth.founder.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.cathel.saaserpcore.auth.dto.FounderLoginRequestDto;
-import ru.cathel.saaserpcore.auth.dto.FounderSignupRequestDto;
+import ru.cathel.saaserpcore.auth.founder.dto.FounderLoginRequestDto;
+import ru.cathel.saaserpcore.auth.founder.dto.FounderSignupRequestDto;
 import ru.cathel.saaserpcore.founder.dto.FounderResponseDto;
 import ru.cathel.saaserpcore.founder.service.FounderService;
 
